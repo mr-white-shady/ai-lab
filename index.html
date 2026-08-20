@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Lab Experiments - Full</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #ffffff;
+      font-family: Arial;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 { text-align: center; color: #00ffff; }
+    h2 { color: #38bdf8; }
+    .box {
+      border: 1px solid #334155;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+    }
+    pre {
+      background: #1e293b;
+      padding: 12px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>AI LAB EXPERIMENTS</h1>
+
+<!-- PROGRAM 1 -->
+<div class="box">
+<h2>Program 1: Installation of Python & Libraries</h2>
+
+<b>Aim:</b>
+<p>To install Python and required AI libraries like NumPy, Pandas, Matplotlib, Scikit-learn, NLTK, and TensorFlow.</p>
+
+<b>Algorithm:</b>
+<pre>
+1. Download Python from official website.
+2. Install Python in system.
+3. Open command prompt / terminal.
+4. Install libraries using pip.
+5. Import libraries.
+6. Print confirmation.
+</pre>
+
+<b>Program:</b>
+<pre>
+import numpy
+import pandas
+import matplotlib
+import sklearn
+import nltk
+
+print("All AI libraries installed successfully!")
+print("NumPy version:", numpy.__version__)
+print("Pandas version:", pandas.__version__)
+</pre>
+
+<b>Output:</b>
+<pre>
+All AI libraries installed successfully!
+NumPy version: x.x.x
+Pandas version: x.x.x
+</pre>
+
+<b>Result:</b>
+<p>Thus, Python and required AI libraries were successfully installed.</p>
+</div>
+
+<!-- PROGRAM 2 -->
+<div class="box">
+<h2>Program 2: BFS & DFS</h2>
+
+<b>Aim:</b>
+<p>To implement Breadth First Search (BFS) and Depth First Search (DFS).</p>
+
+<b>Algorithm:</b>
+<pre>
+BFS:
+1. Start node.
+2. Use queue.
+3. Visit nodes level by level.
+
+DFS:
+1. Start node.
+2. Use recursion.
+3. Visit depth-wise.
+</pre>
+
+<b>Program:</b>
+<pre>
+from collections import deque
+
+graph = {
+ 'A': ['B', 'C'],
+ 'B': ['D', 'E'],
+ 'C': ['F'],
+ 'D': [],
+ 'E': ['F'],
+ 'F': []
+}
+
+def bfs(start):
+    visited = set()
+    queue = deque([start])
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            queue.extend(graph[node])
+
+def dfs(node, visited=None):
+    if visited is None:
+        visited = set()
+    if node not in visited:
+        print(node, end=" ")
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(neighbour, visited)
+
+print("BFS Traversal:")
+bfs('A')
+print("\nDFS Traversal:")
+dfs('A')
+</pre>
+
+<b>Output:</b>
+<pre>
+BFS Traversal:
+A B C D E F
+DFS Traversal:
+A B D E F C
+</pre>
+
+<b>Result:</b>
+<p>Thus, BFS and DFS traversals were successfully implemented.</p>
+</div>
+
+<!-- PROGRAM 3 -->
+<div class="box">
+<h2>Program 3: A* Search Algorithm</h2>
+
+<b>Aim:</b>
+<p>To implement A* algorithm to find shortest path.</p>
+
+<b>Algorithm:</b>
+<pre>
+1. Initialize priority queue.
+2. Add start node.
+3. Expand neighbors.
+4. Update cost and path.
+5. Return shortest path.
+</pre>
+
+<b>Program:</b>
+<pre>
+import heapq
+
+graph = {
+ 'A': [('B', 1), ('C', 3)],
+ 'B': [('D', 3), ('E', 1)],
+ 'C': [('F', 2)],
+ 'D': [('G', 2)],
+ 'E': [('G', 4)],
+ 'F': [('G', 1)],
+ 'G': []
+}
+
+h = {
+ 'A': 6, 'B': 4, 'C': 4,
+ 'D': 2, 'E': 3, 'F': 1, 'G': 0
+}
+
+def a_star(start, goal):
+    queue = [(h[start], 0, start, [start])]
+    visited = set()
+
+    while queue:
+        f, g, node, path = heapq.heappop(queue)
+        if node == goal:
+            return path, g
+        if node in visited:
+            continue
+        visited.add(node)
+
+        for neighbour, cost in graph[node]:
+            new_g = g + cost
+            new_f = new_g + h[neighbour]
+            heapq.heappush(queue, (new_f, new_g, neighbour, path + [neighbour]))
+
+path, cost = a_star('A', 'G')
+print("Shortest Path:", path)
+print("Total Cost:", cost)
+</pre>
+
+<b>Output:</b>
+<pre>
+Shortest Path: ['A', 'B', 'E', 'G']
+Total Cost: 6
+</pre>
+
+<b>Result:</b>
+<p>Thus, A* algorithm successfully found the shortest path.</p>
+</div>
+
+<!-- PROGRAM 4 -->
+<div class="box">
+<h2>Program 4: Map Coloring (CSP)</h2>
+
+<b>Aim:</b>
+<p>To solve map coloring problem using Constraint Satisfaction.</p>
+
+<b>Algorithm:</b>
+<pre>
+1. Define regions and colors.
+2. Assign color.
+3. Check constraints.
+4. Use backtracking.
+</pre>
+
+<b>Program:</b>
+<pre>
+colors = ['Red', 'Green', 'Blue']
+regions = ['A', 'B', 'C', 'D']
+
+neighbors = {
+ 'A': ['B', 'C'],
+ 'B': ['A', 'C', 'D'],
+ 'C': ['A', 'B', 'D'],
+ 'D': ['B', 'C']
+}
+
+assignment = {}
+
+def is_safe(region, color):
+    for neighbor in neighbors[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+def solve():
+    if len(assignment) == len(regions):
+        return True
+
+    region = regions[len(assignment)]
+
+    for color in colors:
+        if is_safe(region, color):
+            assignment[region] = color
+            if solve():
+                return True
+            del assignment[region]
+    return False
+
+if solve():
+    print("Solution:")
+    for region, color in assignment.items():
+        print(region, "=", color)
+</pre>
+
+<b>Output:</b>
+<pre>
+Solution:
+A = Red
+B = Green
+C = Blue
+D = Red
+</pre>
+
+<b>Result:</b>
+<p>Thus, map coloring problem was solved successfully.</p>
+</div>
+
+<!-- PROGRAM 5 -->
+<div class="box">
+<h2>Program 5: Minimax Algorithm</h2>
+
+<b>Aim:</b>
+<p>To implement Minimax algorithm for Tic-Tac-Toe.</p>
+
+<b>Algorithm:</b>
+<pre>
+1. Check winner.
+2. Maximize or minimize score.
+3. Recursively evaluate moves.
+</pre>
+
+<b>Program:</b>
+<pre>
+def minimax(board, depth, is_maximizing):
+    winner = check_winner(board)
+    if winner == 'X': return 1
+    if winner == 'O': return -1
+    if ' ' not in board: return 0
+
+    if is_maximizing:
+        best = -1000
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'X'
+                best = max(best, minimax(board, depth+1, False))
+                board[i] = ' '
+        return best
+    else:
+        best = 1000
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'O'
+                best = min(best, minimax(board, depth+1, True))
+                board[i] = ' '
+        return best
+
+def check_winner(board):
+    wins = [(0,1,2),(3,4,5),(6,7,8),
+            (0,3,6),(1,4,7),(2,5,8),
+            (0,4,8),(2,4,6)]
+    for a,b,c in wins:
+        if board[a] != ' ' and board[a]==board[b]==board[c]:
+            return board[a]
+    return None
+
+def best_move(board):
+    best = -1000
+    move = -1
+    for i in range(9):
+        if board[i] == ' ':
+            board[i] = 'X'
+            score = minimax(board,0,False)
+            board[i] = ' '
+            if score > best:
+                best = score
+                move = i
+    return move
+
+board = ['O','X','O','X','X',' ',' ',' ','O']
+print("Best move:", best_move(board)+1)
+</pre>
+
+<b>Output:</b>
+<pre>
+Best move for X is position: 6
+</pre>
+
+<b>Result:</b>
+<p>Thus, Minimax algorithm successfully finds best move.</p>
+</div>
+
+</body>
+</html>
